@@ -2,9 +2,11 @@
 
 A feature rich plug-in for [UdonChips](https://lura.booth.pm/items/3060394) which adds configurable persistence.
 
+![kdjfhgb](https://github.com/user-attachments/assets/a13f3ccb-5606-42d8-8575-0529345a4647)
+
 ## Setup
 
-1. Download the latest Release
+1. [Download](https://github.com/200Tigersbloxed/SafeUdonChips/releases/latest/download/SafeUdonChips.unitypackage) the latest release
 2. Import the unitypackage into your project
 3. Drag the Prefab into the Scene with the UdonChips GameObject
 4. Reference the Chips object
