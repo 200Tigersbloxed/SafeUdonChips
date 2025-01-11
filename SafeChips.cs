@@ -8,7 +8,7 @@ using VRC.SDKBase;
 
 public class SafeChips : UdonSharpBehaviour
 {
-    private const string VERSION = "v1.0.0";
+    private const string VERSION = "v1.0.1";
     
     [NotNull]
     [Tooltip("(Required) The UdonChips object to associate with this instance")]
@@ -24,7 +24,6 @@ public class SafeChips : UdonSharpBehaviour
     [Tooltip("(Advanced) What the key for checking initialize status with persistence should be")]
     public string HasInitializedKey = "HasInit";
     
-    private bool noChips = true;
     private bool dontRun = true;
     private bool firstLoad;
     private bool sentWaitEvent;
@@ -96,8 +95,12 @@ public class SafeChips : UdonSharpBehaviour
         sentWaitEvent = true;
     }
 
-    private void Start()
+    public override void OnPlayerRestored(VRCPlayerApi plr)
     {
+        if(firstLoad) return;
+#if DEBUG
+        Debug.Log("Loaded PlayerData!");
+#endif
         if (Chips == null)
         {
             Debug.LogError("Cannot load SafeChips! No Chips object was provided.");
@@ -105,13 +108,6 @@ public class SafeChips : UdonSharpBehaviour
         }
         // Initialize Money
         startingMoney = Chips.money;
-        noChips = false;
-    }
-
-    public override void OnPlayerDataUpdated(VRCPlayerApi player, PlayerData.Info[] infos)
-    {
-        // Don't do anything if the data isn't local, there's no Chips object, or we've already done a PlayerData load
-        if(!player.isLocal || noChips || firstLoad) return;
         // Initialize Data Store
         float loadedMoney = startingMoney;
         bool hasInit = PlayerData.GetBool(Networking.LocalPlayer, HasInitializedKey);
@@ -134,7 +130,7 @@ public class SafeChips : UdonSharpBehaviour
         dontRun = false;
         firstLoad = true;
 #if DEBUG
-        Debug.Log($"Loaded SafeChips ({VERSION}) with {loadedMoney} UdonChips for {player.playerId}!");
+        Debug.Log($"Loaded SafeChips ({VERSION}) with {loadedMoney} UdonChips!");
 #endif
     }
 
