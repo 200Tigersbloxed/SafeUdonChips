@@ -8,7 +8,7 @@ using VRC.SDKBase;
 
 public class SafeChips : UdonSharpBehaviour
 {
-    private const string VERSION = "v1.0.1";
+    private const string VERSION = "v1.0.2";
     
     [NotNull]
     [Tooltip("(Required) The UdonChips object to associate with this instance")]
@@ -97,7 +97,7 @@ public class SafeChips : UdonSharpBehaviour
 
     public override void OnPlayerRestored(VRCPlayerApi plr)
     {
-        if(firstLoad) return;
+        if(firstLoad || !plr.isLocal) return;
 #if DEBUG
         Debug.Log("Loaded PlayerData!");
 #endif
